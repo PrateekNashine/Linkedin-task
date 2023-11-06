@@ -1,6 +1,6 @@
 const { asyncErrors } = require("../middlewares/asyncErrors");
 const User = require("../models/userModel");
-// const Job = require("../models/jobModel");
+const Job = require("../models/jobModel");
 const ErrorHandler = require('../utils/errorHandler');
 // const { sendmail } = require('../utils/nodemailer');
 const { setToken } = require('../utils/setToken');
@@ -94,27 +94,34 @@ exports.uploadResume = asyncErrors(async (req, res, next) => {
 //     res.json({ message: "Email sent!" });
 // });
 
-// // -------------------------------------------View All Jobs-------------------------------------------
+// -------------------------------------------View All Jobs-------------------------------------------
 
-// // Route: /user/viewj-obs (POST)
-// exports.viewuserjobs = asyncErrors(async (req, res, next) => {
-//     const jobs = await Job.find().exec();
+// Route: /user/view-jobs (POST)
+exports.viewjobs = asyncErrors(async (req, res, next) => {
+    const jobs = await Job.find().exec();
 
-//     res.status(200).json({ jobs })
-// });
+    res.status(200).json({ jobs })
+});
 
 
 // // ---------------------------------------------Apply Job---------------------------------------------
 
-// exports.userApplyJob = asyncErrors(async (req, res, next) => {
-//     const user = await User.findById(req.id).exec();
-//     const job = await Job.findById(req.params.jobid).exec();
+// Route: /user/applyjob/:jobid (GET)
+exports.userApplyJob = asyncErrors(async (req, res, next) => {
+    const user = await User.findById(req.id).exec();
+    const job = await Job.findById(req.params.jobid).exec();
 
-//     user.appliedJobs.push(job._id);
-//     job.users.push(user._id);
+    if (user.uploadedresume.fileId === "") {
+        return next(
+            new ErrorHandler('Please upload your resume to sumit your application', 401)
+        )
+    }
 
-//     await user.save();
-//     await job.save();
+    user.appliedJobs.push(job._id);
+    job.appliedUser.push({ name: user.firstname, contact: user.contact, resume: user.uploadedresume.url, applicationDate: Date() });
 
-//     res.json({ message: "You have successfully applied to this Job. Please check the dashboard section to view your applied jobs." });
-// });
+    await user.save();
+    await job.save();
+
+    res.json({ message: "You have successfully applied to this Job. Please check the dashboard section to view your applied jobs." });
+});

@@ -85,22 +85,31 @@ exports.createJob = asyncErrors(async (req, res, next) => {
     res.status(200).json({ success: true, job });
 });
 
-// // Route: /company/job/read (POST)
-// exports.readAllJob = catchAsyncErrors(async (req, res, next) => {
-//     const { jobs } = await Company.findById(req.id)
-//         .populate("jobs")
-//         .exec();
+// Route: /company/job/read (POST)
+exports.readAllJob = asyncErrors(async (req, res, next) => {
+    const { jobs } = await Company.findById(req.id)
+        .populate("jobs")
+        .exec();
 
-//     res.status(200).json({ success: true, jobs });
-// });
+    res.status(200).json({ jobs });
+});
 
-// // Route: /company/job/read/:id (POST)
-// exports.readJob = catchAsyncErrors(async (req, res, next) => {
-//     const job = await Job.findById(req.params.id).exec();
-//     if (!job) {
-//         return next(
-//             new ErrorHandler('Job not found!', 404)
-//         )
-//     }
-//     res.status(200).json({ success: true, job });
-// });
+// Route: /company/job/read/:id (POST)
+exports.readJob = asyncErrors(async (req, res, next) => {
+    const job = await Job.findById(req.params.id).exec();
+    if (!job) {
+        return next(
+            new ErrorHandler('Job not found!', 404)
+        )
+    }
+    res.status(200).json({ success: true, job });
+});
+
+// Route: /company/job/readapplications/:jobid (POST)
+exports.readJobApplicatons = asyncErrors(async (req, res, next) => {
+    const {appliedUser} = await Job.findById(req.params.id)
+            .populate("appliedUser")
+            .exec();
+    
+    res.status(200).json({ success: true, appliedUser });
+});

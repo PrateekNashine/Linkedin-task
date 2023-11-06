@@ -2,31 +2,18 @@ const mongoose = require('mongoose');
 
 // Schema for Job Database
 const jobModel = mongoose.Schema({
-    companyName: {
+    company: {
         type: mongoose.Schema.Types.ObjectID,
-        ref: 'company',
-        required: [true, "Company name is required"]
+        ref: 'company', 
     },
-    appliedUser: [{
-        type: mongoose.Schema.Types.ObjectID,
-        ref: 'users'
-    }],
+    appliedUser: [],
     jobRole: {
         type: String,
         required: [true, "Job role is required"]
     },
-    jobType: {
-        type: String,
-        enum: ["In Office/Hybrid", "Work from Home"],
-        required: [true, "Select job type"]
-    },
     requiredSkills: {
         type: String,
         required: [true, "Enter the required skills for the job."]
-    },
-    jobopenings: {
-        type: Number,
-        required: [true, "Enter the job opening quantity."]
     },
     jobdescription: {
         type: String,
@@ -35,13 +22,15 @@ const jobModel = mongoose.Schema({
         maxLength: [100, "Job description should not be more than 100 characters."],
         trim: []
     },
-    preferences: String,
     salary: {
         type: String,
         required: [true, "Salary field can't be empty."]
     },
-    perks: String,
-    assesments: String,
+    // applicationDate: new Date("<YYYY-mm-dd>")
+    // applicationdeadline: {
+    //     type: String,
+    //     required: [true, "Job deadline date is required."]
+    // }
 
 }, { timestamps: true });
 

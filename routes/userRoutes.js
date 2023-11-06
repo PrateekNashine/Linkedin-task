@@ -3,14 +3,14 @@ const {
     homepage,
     usersignup, usersignin, usersignout,
     currentuser, 
-    usersendmail, uploadResume} = require('../controllers/userControllers');
+    usersendmail, uploadResume, viewjobs, userApplyJob} = require('../controllers/userControllers');
 const { isAuthenticated } = require('../middlewares/auth');
 const router = express.Router();
 
 // GET /
 router.get("/", homepage);
 
-// GET /student
+// GET /user
 router.get("/currentuser", isAuthenticated, currentuser)
 
 // POST /USER/SIGNUP
@@ -30,11 +30,11 @@ router.post("/user/uploadresume/:studentid", isAuthenticated, uploadResume);
 
 
 // -------------------------------------------View All Jobs-------------------------------------------
-// POST /user/view-jobs
-// router.post("/user/view-jobs", isAuthenticated, viewuserjobs);
+// POST /user/view-jobs (GET)
+router.get("/user/view-jobs", isAuthenticated, viewjobs );
 
 // ---------------------------------------------Apply Job---------------------------------------------
-// POST /student/applyjob/:jobId
-// router.post("/student/applyjob/:jobid", isAuthenticated, studentApplyJob);
+// POST /user/applyjob/:jobId
+router.get("/user/applyjob/:jobid", isAuthenticated, userApplyJob);
 
 module.exports = router;
