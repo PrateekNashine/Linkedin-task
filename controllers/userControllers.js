@@ -1,11 +1,11 @@
 const { asyncErrors } = require("../middlewares/asyncErrors");
 const User = require("../models/userModel");
-// const Internship = require("../models/internshipModel");
 // const Job = require("../models/jobModel");
 const ErrorHandler = require('../utils/errorHandler');
 // const { sendmail } = require('../utils/nodemailer');
 const { setToken } = require('../utils/setToken');
-// const path = require('path');
+const imagekit = require('../utils/imagekit').initImagekit();
+const path = require('path');
 
 
 // Route: /
@@ -51,9 +51,27 @@ exports.usersignout = asyncErrors(async (req, res, next) => {
     res.json({ message: 'Successfully signed out!' })
 });
 
-// Route: /user/uploadresume (POST)
+// Route: /user/uploadresume/:studentid (POST)
 exports.uploadResume = asyncErrors(async (req, res, next) => {
-    
+    const user = await User.findById(req.params.studentid).exec();
+    const file = req.files.uploadedresume;
+    const updatedFilename = `${user.firstname}-resume-${Date.now()}-${path.extname(file.name)}`
+
+    if (user.uploadedresume.fileId !== "") {
+        await imagekit.deleteFile(user.uploadedresume.fileId);
+    }
+
+    const { fileId, url } = await imagekit.upload({
+        file: file.data,
+        fileName: updatedFilename
+    });
+
+    user.uploadedresume = { fileId, url };
+    await user.save();
+    res.status(200).json({
+        success: true,
+        message: "Resume uploaded succesfully"
+    })
 })
 
 // // Route: /user/sendmail (POST)

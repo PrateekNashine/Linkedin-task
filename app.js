@@ -11,7 +11,7 @@ app.use(logger("tiny"));
 
 //Body Parser
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 // Sessions and Cookies
 const session = require('express-session');
@@ -22,8 +22,11 @@ app.use(session({
     saveUninitialized: true,
     secret: process.env.EXPRESS_SESSOION_SECRET
 }));
-
 app.use(cookieparser());
+
+// Express file-upload
+const fileupload = require('express-fileupload');
+app.use(fileupload());
 
 // Routes
 app.use("/", require('./routes/userRoutes'));

@@ -1,11 +1,9 @@
 const { asyncErrors } = require("../middlewares/asyncErrors");
 const Company = require("../models/companyModel");
-// const Internship = require("../models/internshipModel");
-// const Job = require("../models/jobModel");
+const Job = require("../models/jobModel");
 const ErrorHandler = require('../utils/errorHandler');
 // const { sendmail } = require('../utils/nodemailer');
 const { setToken } = require('../utils/setToken');
-// const path = require('path');
 
 
 // Route: /
@@ -71,31 +69,21 @@ exports.accountsignout = asyncErrors(async (req, res, next) => {
 //     res.json({ message: "Email sent!" });
 // });
 
-// // -------------------------------------------View All Jobs-------------------------------------------
-
-// // Route: /company/viewj-obs (POST)
-// exports.viewcompanyjobs = asyncErrors(async (req, res, next) => {
-//     const jobs = await Job.find().exec();
-
-//     res.status(200).json({ jobs })
-// });
-
-
 // -----------------------------------------------Jobs----------------------------------------------- 
 
 // Route: /company/job/create (POST)
-// exports.createJob = catchAsyncErrors(async (req, res, next) => {
-//     const company = await Company.findById(req.id).exec();
-//     const job = await new Job(req.body);
+exports.createJob = asyncErrors(async (req, res, next) => {
+    const company = await Company.findById(req.id).exec();
+    const job = await new Job(req.body);
 
-//     job.company = company._id;
-//     await job.save();
+    job.company = company._id;
+    await job.save();
 
-//     company.jobs.push(job._id);
-//     await company.save();
+    company.jobs.push(job._id);
+    await company.save();
 
-//     res.status(200).json({ success: true, job });
-// });
+    res.status(200).json({ success: true, job });
+});
 
 // // Route: /company/job/read (POST)
 // exports.readAllJob = catchAsyncErrors(async (req, res, next) => {

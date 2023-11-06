@@ -3,7 +3,8 @@ const {
     homepage,
     accountsignup, accountsignin, accountsignout,
     currentaccount, 
-    companysendmail} = require('../controllers/companyControllers');
+    companysendmail,
+    createJob} = require('../controllers/companyControllers');
 const { isAuthenticated } = require('../middlewares/auth');
 const router = express.Router();
 
@@ -27,8 +28,8 @@ router.get("/signout", isAuthenticated, accountsignout);
 
 // -----------------------------------------------Jobs-----------------------------------------------
 
-// // POST /employer/job/create 
-// router.post("/job/create", isAuthenticated, createJob);
+// POST /employer/job/create 
+router.post("/job/create", isAuthenticated, createJob);
 
 // // POST /employer/job/read (READ ALL INTERNSHIPS)
 // router.post("/job/read", isAuthenticated, readAllJob);

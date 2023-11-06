@@ -25,8 +25,8 @@ router.get("/user/signout", isAuthenticated, usersignout);
 // POST /USER/SENDMAIL
 // router.post("/user/sendmail", isAuthenticated, usersendmail); 
 
-// POST /USER/UPLOADRESUME
-// router.post("/user/uploadresume", isAuthenticated, uploadResume);
+// POST /USER/UPLOADRESUME/:STUDENTID   
+router.post("/user/uploadresume/:studentid", isAuthenticated, uploadResume);
 
 
 // -------------------------------------------View All Jobs-------------------------------------------

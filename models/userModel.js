@@ -45,15 +45,12 @@ const userModel = mongoose.Schema({
         minLength: [6, 'Password should have atleast 6 Characters'],
         // match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/, "Your password must contain: Special Character, Number, Capital letter"]
     },
-    resume: {
-        education: [],
-        jobs: [],
-        internships: [],
-        responsibility: [],
-        coursess: [],
-        projects: [],
-        skills: [],
-        achievements: []
+    uploadedresume: {
+        type: Object,
+        default: {
+            fileId: "",
+            url: ""
+        }
     },
     appliedJobs: [
         { type: mongoose.Schema.Types.ObjectID, ref: 'job' }
