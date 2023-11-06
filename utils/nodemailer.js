@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const ErrorHandler = require('./errorHandler');
 
-exports.sendmail = (req, res, next, url) => {
+exports.sendmail = (req, res, next) => {
 
     const transport = nodemailer.createTransport({
         service: "gmail",
@@ -16,8 +16,8 @@ exports.sendmail = (req, res, next, url) => {
     const mailOptions = {
         from: "LinkedIn",
         to: req.body.email,
-        subject: "Reset Password Link",
-        html: `<h5>Your application was sent to (Company Name)</h5>`,
+        subject: "Application successfully sent",
+        html: `<h3>Your application was successfully submitted to the company.</h3>`,
     };
 
     transport.sendMail(mailOptions, (err, info) => {
@@ -26,8 +26,7 @@ exports.sendmail = (req, res, next, url) => {
         )
         console.log(info);
         return res.status(200).json({
-            message: "Mail sent Successfully",
-            url
+            message: "Mail sent Successfully"
         });
     });
 }

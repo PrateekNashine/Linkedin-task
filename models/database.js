@@ -8,3 +8,4 @@ exports.connectDatabase = async () => {
         console.log(error.message);
     }
 }
+

@@ -1,8 +1,8 @@
 const { asyncErrors } = require("../middlewares/asyncErrors");
 const Company = require("../models/companyModel");
+const fetchDataFromMongoDB = require("../models/database");
 const Job = require("../models/jobModel");
 const ErrorHandler = require('../utils/errorHandler');
-// const { sendmail } = require('../utils/nodemailer');
 const { setToken } = require('../utils/setToken');
 
 
@@ -107,9 +107,15 @@ exports.readJob = asyncErrors(async (req, res, next) => {
 
 // Route: /company/job/readapplications/:jobid (POST)
 exports.readJobApplicatons = asyncErrors(async (req, res, next) => {
-    const {appliedUser} = await Job.findById(req.params.id)
-            .populate("appliedUser")
-            .exec();
-    
+    const { appliedUser } = await Job.findById(req.params.id).exec();
+
     res.status(200).json({ success: true, appliedUser });
+});
+
+// Route: /company/job/downloadapplications/:jobid (POST)
+exports.downloadApplications = asyncErrors(async (req, res, next) => {
+    const company = await Company.findById(req.id).exec();
+    const job = await Job.findById(req.params.id).exec();
+    fetchDataFromMongoDB(); ``
+    res.json({message: "Download .excel file"});
 });

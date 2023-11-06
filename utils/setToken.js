@@ -11,7 +11,7 @@ exports.setToken = (user, statusCode, res) => {
 
     res.status(statusCode)
         .cookie("token", token, options)
-        .json({success: true, id: user._id, token});
-        
+        .json({ success: true, id: user._id, token });
+
     res.json({ token })
 }
